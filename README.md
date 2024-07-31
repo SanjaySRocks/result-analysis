@@ -1,4 +1,4 @@
-# csjmu-result-scrapper
+# CSJMU Result Downloader
 A python tool to get result from csjmu result official webpage and save pdf automatically.
 
 
