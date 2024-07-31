@@ -33,6 +33,7 @@ class CSJMUResult():
         self.edge_options.add_argument("--headless")
         self.edge_options.add_argument("--disable-gpu")
         self.edge_options.add_argument("--no-sandbox")
+        self.edge_options.add_argument("--guest")
 
         self.driver = webdriver.Edge(options=self.edge_options)
     
@@ -180,6 +181,6 @@ class CSJMUResult():
 
 if __name__=="__main__":
     result = CSJMUResult()
-    result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
-    # result.get_all_students()
+    # result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
+    result.get_all_students()
     result.close()
