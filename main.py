@@ -181,6 +181,5 @@ class CSJMUResult():
 
 if __name__=="__main__":
     result = CSJMUResult()
-    # result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
-    result.get_all_students()
+    result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
     result.close()
