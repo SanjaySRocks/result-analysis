@@ -10,6 +10,7 @@ from selenium.common.exceptions import UnexpectedAlertPresentException
 import edgedriver_autoinstaller
 import os, json
 import base64
+import time
 
 baseDetails = {
     "sessionId": "24",
@@ -19,11 +20,7 @@ baseDetails = {
 }
 
 
-with open("students.json", 'r') as file:
-    Students = json.load(file)
-
-
-class CSJMUResult():
+class BaseResult:
     def __init__(self):
         edgedriver_autoinstaller.install()
 
@@ -32,19 +29,56 @@ class CSJMUResult():
         self.edge_options.add_argument('--log-level=3')
         self.edge_options.add_argument("--headless")
         self.edge_options.add_argument("--disable-gpu")
-        self.edge_options.add_argument("--no-sandbox")
-        self.edge_options.add_argument("--guest")
 
         self.driver = webdriver.Edge(options=self.edge_options)
     
+    def save_as_pdf(self, path):
+        directory = os.path.dirname(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        print_options = {
+            'landscape': False,
+            'displayHeaderFooter': False,
+            'printBackground': True,
+            'preferCSSPageSize': True
+        }
+
+        # Convert the page to PDF
+        result = self.driver.execute_cdp_cmd("Page.printToPDF", print_options)
+        
+        # Decode the base64-encoded PDF data
+        pdf_data = base64.b64decode(result['data'])
+        
+        # Write the PDF to a file
+        with open(path, 'wb') as file:
+            file.write(pdf_data)
+
+    def check_result_exist(self, name, rollno, result_folder):
+        format_name = name.replace(' ', '_')
+        result_path = f"{result_folder}/result-{format_name}-{rollno}.pdf"
+        if os.path.exists(result_path):
+            print(f"The file '{result_path}' already exists.")
+            return True
+        return False
+
+    def close(self):
+        self.driver.quit()
+
+
+class CSJMUResult(BaseResult):    
     def get_all_students(self):
+
+        with open("students.json", 'r') as file:
+            Students = json.load(file)
+
         for st in Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
     def process_student(self, name, rollno, dob):
 
-        if self.checkResultExist(name, rollno, dob):
+        if self.check_result_exist(name, rollno, "Results"):
             return
 
         try:
@@ -127,38 +161,6 @@ class CSJMUResult():
                 file.write(f'{details}\nError: {e.msg}\n\n')
 
 
-    
-    def save_as_pdf(self, path):
-        directory = os.path.dirname(path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-        print_options = {
-            'landscape': False,
-            'displayHeaderFooter': False,
-            'printBackground': True,
-            'preferCSSPageSize': True
-        }
-
-        # Convert the page to PDF
-        result = self.driver.execute_cdp_cmd("Page.printToPDF", print_options)
-        
-        # Decode the base64-encoded PDF data
-        pdf_data = base64.b64decode(result['data'])
-        
-        # Write the PDF to a file
-        with open(path, 'wb') as file:
-            file.write(pdf_data)
-
-    def checkResultExist(self, name, rollno, dob):
-        format_name = name.replace(' ', '_')
-        if os.path.exists(f"Results/result-{format_name}-{rollno}.pdf"):
-            print(f"The file 'result-{format_name}-{rollno}.pdf' already exists.")
-            return True
-        
-    def close(self):
-        self.driver.quit()
-    
     # Extra functions
     def get_roll_no(self, enrollno):
         try:
@@ -193,8 +195,97 @@ class CSJMUResult():
             return None
 
 
+
+class AKTUResult(BaseResult):
+    def get_all_students(self):
+        with open("aktustudents.json", 'r') as file:
+            Students = json.load(file)
+
+        for st in Students:
+            self.process_student(st['name'], st['rollno'], st['dob'])
+
+
+    def process_student(self, name, rollno, dob):
+        
+        if self.check_result_exist(name, rollno, "AKTUResults"):
+            return
+    
+        try:
+            self.driver.get("https://oneview.aktu.ac.in/WebPages/aktu/OneView.aspx")
+
+            self.roll_input = self.driver.find_element(By.ID, 'txtRollNo')
+            self.roll_input.send_keys(rollno)
+
+            self.submit_btn = self.driver.find_element(By.ID, 'btnProceed')
+            self.submit_btn.click()
+
+            input_dob = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, 'txtDOB'))
+            )
+
+            input_dob.send_keys(dob)
+
+            input_dob.send_keys(Keys.RETURN)
+
+            # self.submit_btn = WebDriverWait(self.driver, 10).until(
+            #     EC.element_to_be_clickable((By.ID, 'btnSearch'))
+            # )
+            # self.submit_btn.click()
+
+            # Result Page Open
+            # result_page = WebDriverWait(self.driver, 10).until(
+            #     EC.visibility_of_element_located((By.ID, 'lblRollNo'))
+            # )
+
+            # if result_page:
+            self.scroll_expand()
+
+            format_name = name.replace(' ', '_')
+            self.save_as_pdf(self.driver, f"AKTUResults/result-{format_name}-{rollno}.pdf")
+
+            print(f"---- Download Result Pdf!! {name} ----")
+
+        except Exception as e:
+            details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
+            
+            print(details)
+            print("An error occurred: ", e.msg)
+
+            with open('aktu_error_logs', 'a') as file:
+                file.write(f'{details}\nError: {e}\n\n')
+
+
+    def scroll_expand(self):
+        self.elements = self.driver.find_elements(By.CLASS_NAME, 'headerclass')
+
+        for index, element in enumerate(self.elements):
+            try:
+                # Scroll the element into view
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                
+                # Wait until the element is visible and clickable
+                WebDriverWait(self.driver, 10).until(
+                    EC.visibility_of(element)
+                )
+                WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.CLASS_NAME, 'headerclass'))
+                )
+                
+                element.click()
+                
+                time.sleep(0.5)
+                
+            except Exception as e:
+                print(f"An error occurred while clicking element {index+1}: {e}")
+
+
+
 if __name__=="__main__":
     result = CSJMUResult()
     result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
     # result.get_all_students()
     result.close()
+
+    # result = AKTUResult()
+    # result.get_all_students()
+    # result.close()
