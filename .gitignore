@@ -1,9 +1,11 @@
 DATA.xlsx
 Results
+AKTUResults
 tests
 aktuscrapper
 students.json
 error_logs
+aktu_error_logs
 
 
 # Byte-compiled / optimized / DLL files
