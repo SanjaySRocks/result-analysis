@@ -43,6 +43,10 @@ class CSJMUResult():
 
 
     def process_student(self, name, rollno, dob):
+
+        if self.checkResultExist(name, rollno, dob):
+            return
+
         try:
             # Open CSJMU Website
             self.driver.get("https://admission.csjmu.ac.in/DisplayResult/Index")
@@ -146,6 +150,12 @@ class CSJMUResult():
         with open(path, 'wb') as file:
             file.write(pdf_data)
 
+    def checkResultExist(self, name, rollno, dob):
+        format_name = name.replace(' ', '_')
+        if os.path.exists(f"Results/result-{format_name}-{rollno}.pdf"):
+            print(f"The file 'result-{format_name}-{rollno}.pdf' already exists.")
+            return True
+        
     def close(self):
         self.driver.quit()
     
