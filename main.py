@@ -114,10 +114,14 @@ class CSJMUResult():
             
 
         except UnexpectedAlertPresentException as e:
-            print(e)
 
-        except Exception as e:
-            print(f"An error occurred: {e}")
+            details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
+            print(details)
+            print("Error: ", e.alert_text)
+
+            with open('error_logs', 'a') as file:
+                file.write(f'{details}\nError: {e.msg}\n\n')
+
 
     
     def save_as_pdf(self, path):
@@ -182,4 +186,5 @@ class CSJMUResult():
 if __name__=="__main__":
     result = CSJMUResult()
     result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
+    # result.get_all_students()
     result.close()
