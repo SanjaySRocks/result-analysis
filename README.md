@@ -8,7 +8,7 @@ python main.py
 
 ### Installation
 ```
-pip install selenium edgedriver-autoinstaller
+pip install selenium webdriver-manager
 ```
 
 ## Usage:
