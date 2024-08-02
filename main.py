@@ -35,6 +35,7 @@ class BaseResult:
         self.driver_options.add_argument('--kiosk-printing')
         self.driver_options.add_argument('--log-level=3')
         self.driver_options.add_argument('--guest')
+        self.driver_options.add_argument("--disable-dev-shm-usage")
         self.driver_options.add_argument("--no-sandbox")
         self.driver_options.add_argument("--headless")
         self.driver_options.add_argument("--disable-gpu")
