@@ -2,13 +2,25 @@
 A python tool to download result from csjmu official website
 
 
+### Installation
+
+1. Install Chrome Browser (Linux)
+   [Install Chrome Browser Windows](https://www.google.com/intl/en/chrome/?standalone=1)
 ```
-python main.py
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+dpkg -i google-chrome-stable_current_amd64.deb
 ```
 
-### Installation
+
+
+2. Install Python Packages
 ```
 pip install selenium webdriver-manager
+```
+
+3. Run Program
+```
+python main.py
 ```
 
 ## Usage:
