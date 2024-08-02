@@ -2,12 +2,20 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
-import edgedriver_autoinstaller
+#Edge Driver
+# from selenium.webdriver.edge.service import Service as EdgeService
+# from selenium.webdriver.edge.options import Options
+# from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+# Chrome Driver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
 import os, json
 import base64
 import time
@@ -22,15 +30,21 @@ baseDetails = {
 
 class BaseResult:
     def __init__(self):
-        edgedriver_autoinstaller.install()
 
-        self.edge_options = Options()
-        self.edge_options.add_argument('--kiosk-printing')
-        self.edge_options.add_argument('--log-level=3')
-        self.edge_options.add_argument("--headless")
-        self.edge_options.add_argument("--disable-gpu")
+        self.driver_options = Options()
+        self.driver_options.add_argument('--kiosk-printing')
+        self.driver_options.add_argument('--log-level=3')
+        self.driver_options.add_argument('--guest')
+        self.driver_options.add_argument("--no-sandbox")
+        self.driver_options.add_argument("--headless")
+        self.driver_options.add_argument("--disable-gpu")
 
-        self.driver = webdriver.Edge(options=self.edge_options)
+        # self.service = EdgeService(EdgeChromiumDriverManager().install())
+        # self.driver = webdriver.Edge(service=self.service, options=self.driver_options)
+
+        self.service = ChromeService(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=self.service, options=self.driver_options)
+
     
     def save_as_pdf(self, path):
         directory = os.path.dirname(path)
