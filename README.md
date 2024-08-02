@@ -6,6 +6,11 @@ A python tool to download result from csjmu official website
 python main.py
 ```
 
+### Installation
+```
+pip install selenium edgedriver-autoinstaller
+```
+
 ## Usage:
 
 1. Get student result by name, rollno, dob
@@ -34,5 +39,3 @@ result.close()
 ```
 
 
-### Official website
-![image](https://github.com/user-attachments/assets/f403fb56-fe00-4305-a721-ed0c56081023)
