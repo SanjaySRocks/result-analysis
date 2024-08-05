@@ -256,7 +256,7 @@ class AKTUResult(BaseResult):
             self.scroll_expand()
 
             format_name = name.replace(' ', '_')
-            self.save_as_pdf(self.driver, f"AKTUResults/result-{format_name}-{rollno}.pdf")
+            self.save_as_pdf(f"AKTUResults/result-{format_name}-{rollno}.pdf")
 
             print(f"---- Download Result Pdf!! {name} ----")
 
@@ -264,7 +264,7 @@ class AKTUResult(BaseResult):
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
             
             print(details)
-            print("An error occurred: ", e.msg)
+            print("An error occurred: ", e)
 
             with open('aktu_error_logs', 'a') as file:
                 file.write(f'{details}\nError: {e}\n\n')
@@ -302,5 +302,5 @@ if __name__=="__main__":
     result.close()
 
     # result = AKTUResult()
-    # result.get_all_students()
+    # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
     # result.close()
