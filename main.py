@@ -6,11 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
-#Edge Driver
-# from selenium.webdriver.edge.service import Service as EdgeService
-# from selenium.webdriver.edge.options import Options
-# from webdriver_manager.microsoft import EdgeChromiumDriverManager
-
 # Chrome Driver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
@@ -39,9 +34,6 @@ class BaseResult:
         self.driver_options.add_argument("--no-sandbox")
         self.driver_options.add_argument("--headless")
         self.driver_options.add_argument("--disable-gpu")
-
-        # self.service = EdgeService(EdgeChromiumDriverManager().install())
-        # self.driver = webdriver.Edge(service=self.service, options=self.driver_options)
 
         self.service = ChromeService(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=self.service, options=self.driver_options)
