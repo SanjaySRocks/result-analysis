@@ -28,4 +28,4 @@ jobs:
           pip install selenium webdriver-manager
 
       - name: Run Selenium script
-        run: python test.py
+        run: python main.py

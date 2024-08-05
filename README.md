@@ -1,8 +1,20 @@
 # CSJMU Result Downloader
-A python tool to download result from csjmu official website
+A python tool to download result from csjmu official website. It now supports AKTU Result fetching.
+
+### Features
+* Automated Result Download: Fetch results for multiple students in bulk.
+* Flexible Input: Accepts input in various formats including Excel Sheet and JSON.
+* Date Handling: Converts and formats dates for easy reference.
+* Web Scraping: Utilizes Selenium for navigating and extracting data from the official result page.
+
+### Prerequisites
+Before you begin, ensure you have met the following requirements:
+
+* Python 3.x
+* Chrome Browser
 
 
-### Installation
+### ⚙ Installation
 
 1. Install Chrome Browser (Linux)
    [Install Chrome Browser Windows](https://www.google.com/intl/en/chrome/?standalone=1)
@@ -11,19 +23,22 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 dpkg -i google-chrome-stable_current_amd64.deb
 ```
 
+2. Clone Respository
+```
+git clone https://github.com/SanjaySRocks/csjmu-result-downloader.git
+```
 
-
-2. Install Python Packages
+2. Install dependencies
 ```
 pip install selenium webdriver-manager
 ```
 
-3. Run Program
+3. Run script
 ```
 python main.py
 ```
 
-## Usage:
+### 🤖 Usage:
 
 1. Get student result by name, rollno, dob
 
@@ -50,4 +65,20 @@ print(roll_number)
 result.close()
 ```
 
+
+### Contributing
+If you would like to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (**git checkout -b feature-branch**).
+3. Make your changes.
+4. Commit your changes (**git commit -am 'Add new feature'**).
+5. Push to the branch (**git push origin feature-branch**).
+6. Open a Pull Request.
+
+### License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+### Contact
+For any questions or issues, contact me
 
