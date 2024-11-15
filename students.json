@@ -1,31 +1,141 @@
 [
     {
+        "name": "ABHISHEK PATEL",
+        "rollno": 22015003548,
+        "dob": "06/10/2005"
+    },
+    {
+        "name": "ABHISHEK SRIVASTAVA",
+        "rollno": 22015003549,
+        "dob": "04/20/2005"
+    },
+    {
+        "name": "ADITYA PANDEY",
+        "rollno": 22015003550,
+        "dob": "08/31/2005"
+    },
+    {
+        "name": "AJAY PATEL",
+        "rollno": 22015003551,
+        "dob": "08/22/2003"
+    },
+    {
+        "name": "AMAN SINGH",
+        "rollno": 22015003552,
+        "dob": "08/06/2004"
+    },
+    {
+        "name": "AMIT RAM",
+        "rollno": 22015003553,
+        "dob": "05/06/2002"
+    },
+    {
+        "name": "ANKIT ",
+        "rollno": 22015003554,
+        "dob": "01/13/2005"
+    },
+    {
+        "name": "ARPIT SINGH",
+        "rollno": 22015003555,
+        "dob": "01/14/2005"
+    },
+    {
+        "name": "ARPIT TIWARI",
+        "rollno": 22015003556,
+        "dob": "02/03/2005"
+    },
+    {
+        "name": "ASHISH RATHORE",
+        "rollno": 22015003557,
+        "dob": "05/05/2004"
+    },
+    {
+        "name": "ASHISH YADAV",
+        "rollno": 22015003558,
+        "dob": "05/05/2004"
+    },
+    {
+        "name": "AYUSH SHARMA",
+        "rollno": 22015003560,
+        "dob": "07/13/2004"
+    },
+    {
+        "name": "DHRUV SINGH",
+        "rollno": 22015003562,
+        "dob": "04/14/2005"
+    },
+    {
+        "name": "FATIMA SIDDIQUI",
+        "rollno": 22015003563,
+        "dob": "03/23/2000"
+    },
+    {
+        "name": "GAGAN SINGH",
+        "rollno": 22015003564,
+        "dob": "05/04/2003"
+    },
+    {
+        "name": "GAURAV SINGH",
+        "rollno": 22015003565,
+        "dob": "04/28/2005"
+    },
+    {
+        "name": "GOVIND YADAV",
+        "rollno": 22015003566,
+        "dob": "05/08/2003"
+    },
+    {
+        "name": "HIMANSHU SAHU",
+        "rollno": 22015003568,
+        "dob": "07/05/2006"
+    },
+    {
+        "name": "JAYA AWASTHI",
+        "rollno": 22015003569,
+        "dob": "02/04/2005"
+    },
+    {
+        "name": "KARTIKAY GAUTAM",
+        "rollno": 22015003570,
+        "dob": "07/27/2005"
+    },
+    {
+        "name": "KRISHNA PRAJAPATI",
+        "rollno": 22015003571,
+        "dob": "06/19/2005"
+    },
+    {
+        "name": "KUNAL PRAJAPATI",
+        "rollno": 22015003573,
+        "dob": "03/05/2003"
+    },
+    {
+        "name": "LAKSHYA SRIVASTAVA",
+        "rollno": 22015003574,
+        "dob": "11/17/2006"
+    },
+    {
         "name": "MANASVI MISHRA",
         "rollno": 22015003575,
         "dob": "05/27/2006"
     },
     {
-        "name": "MOHAMMAD KAIF",
-        "rollno": 22015003576,
-        "dob": "03/12/2001"
-    },
-    {
-        "name": "MOHAMMAD NAUSHAD ANSARI",
+        "name": "MOHAMMAD ANSARI",
         "rollno": 22015003577,
         "dob": "09/04/2003"
     },
     {
-        "name": "MOHD ADIL",
+        "name": "MOHD ",
         "rollno": 22015003578,
         "dob": "08/08/2002"
     },
     {
-        "name": "MOHD ARSH HASAN",
+        "name": "MOHD HASAN",
         "rollno": 22015003579,
         "dob": "09/16/2002"
     },
     {
-        "name": "MOHD SAMEER",
+        "name": "MOHD SAMEER ",
         "rollno": 22015003580,
         "dob": "12/26/2003"
     },
@@ -60,39 +170,24 @@
         "dob": "07/21/2006"
     },
     {
-        "name": "PRATEEK SHARMA",
-        "rollno": 22015003587,
-        "dob": "12/14/2003"
-    },
-    {
         "name": "PRINCI YADAV",
         "rollno": 22015003588,
         "dob": "06/03/2006"
     },
     {
-        "name": "PUNEET PRATAP SINGH",
+        "name": "PUNEET SINGH",
         "rollno": 22015003589,
         "dob": "06/17/2005"
     },
     {
-        "name": "ROHIT KUMAR",
+        "name": "ROHIT ",
         "rollno": 22015003590,
         "dob": "09/08/2004"
     },
     {
-        "name": "ROHIT SINGH",
-        "rollno": 22015003591,
-        "dob": "09/01/2000"
-    },
-    {
         "name": "SAGAR PANDEY",
         "rollno": 22015003592,
-        "dob": "11/24/2005"
-    },
-    {
-        "name": "SANDEEP SINGH",
-        "rollno": 22015003593,
-        "dob": "10/18/2003"
+        "dob": "02/24/2005"
     },
     {
         "name": "SANDESH KUMAR",
@@ -115,7 +210,7 @@
         "dob": "06/27/2005"
     },
     {
-        "name": "SATYAM KUMAR",
+        "name": "SATYAM ",
         "rollno": 22015003598,
         "dob": "02/01/2006"
     },
@@ -133,11 +228,6 @@
         "name": "SHASHANK SINGH",
         "rollno": 22015003601,
         "dob": "11/21/2003"
-    },
-    {
-        "name": "SHIBAM",
-        "rollno": 22015003602,
-        "dob": "05/05/2003"
     },
     {
         "name": "SHIVAM YADAV",
@@ -165,7 +255,7 @@
         "dob": "08/25/2003"
     },
     {
-        "name": "SURESH KUMAR MAURYA",
+        "name": "SURESH MAURYA",
         "rollno": 22015003608,
         "dob": "08/17/2001"
     },
@@ -188,145 +278,5 @@
         "name": "VISHWAJEET SINGH",
         "rollno": 22015003612,
         "dob": "09/17/2003"
-    },
-    {
-        "name": "ABHINAY PANDEY",
-        "rollno": 22015003547,
-        "dob": "05/10/2004"
-    },
-    {
-        "name": "ABHISHEK PATEL",
-        "rollno": 22015003548,
-        "dob": "06/10/2005"
-    },
-    {
-        "name": "ABHISHEK SRIVASTAVA",
-        "rollno": 22015003549,
-        "dob": "04/20/2005"
-    },
-    {
-        "name": "ADITYA PANDEY",
-        "rollno": 22015003550,
-        "dob": "08/31/2005"
-    },
-    {
-        "name": "AJAY PATEL",
-        "rollno": 22015003551,
-        "dob": "08/22/2003"
-    },
-    {
-        "name": "AMAN SINGH",
-        "rollno": 22015003552,
-        "dob": "08/06/2004"
-    },
-    {
-        "name": "AMIT KUMAR RAM",
-        "rollno": 22015003553,
-        "dob": "05/06/2002"
-    },
-    {
-        "name": "ANKIT KUMAR",
-        "rollno": 22015003554,
-        "dob": "01/13/2005"
-    },
-    {
-        "name": "ARPIT SINGH",
-        "rollno": 22015003555,
-        "dob": "01/14/2005"
-    },
-    {
-        "name": "ARPIT TIWARI",
-        "rollno": 22015003556,
-        "dob": "02/03/2005"
-    },
-    {
-        "name": "ASHISH RATHORE",
-        "rollno": 22015003557,
-        "dob": "05/05/2004"
-    },
-    {
-        "name": "ASHISH YADAV",
-        "rollno": 22015003558,
-        "dob": "05/05/2004"
-    },
-    {
-        "name": "ASHWANI YADAV",
-        "rollno": 22015003559,
-        "dob": "08/27/2005"
-    },
-    {
-        "name": "AYUSH SHARMA",
-        "rollno": 22015003560,
-        "dob": "07/13/2004"
-    },
-    {
-        "name": "BHANU",
-        "rollno": 22015003561,
-        "dob": "07/15/2003"
-    },
-    {
-        "name": "DHRUV PRATAP SINGH",
-        "rollno": 22015003562,
-        "dob": "04/14/2005"
-    },
-    {
-        "name": "FATIMA SIDDIQUI",
-        "rollno": 22015003563,
-        "dob": "03/23/2000"
-    },
-    {
-        "name": "GAGAN DEEP SINGH",
-        "rollno": 22015003564,
-        "dob": "05/04/2003"
-    },
-    {
-        "name": "GAURAV SINGH",
-        "rollno": 22015003565,
-        "dob": "04/28/2005"
-    },
-    {
-        "name": "GOVIND YADAV",
-        "rollno": 22015003566,
-        "dob": "05/08/2003"
-    },
-    {
-        "name": "HIMANSHU",
-        "rollno": 22015003567,
-        "dob": "12/23/2005"
-    },
-    {
-        "name": "HIMANSHU SAHU",
-        "rollno": 22015003568,
-        "dob": "07/05/2006"
-    },
-    {
-        "name": "JAYA AWASTHI",
-        "rollno": 22015003569,
-        "dob": "02/04/2005"
-    },
-    {
-        "name": "KARTIKAY GAUTAM",
-        "rollno": 22015003570,
-        "dob": "07/27/2005"
-    },
-    {
-        "name": "KRISHNA PRAJAPATI",
-        "rollno": 22015003571,
-        "dob": "06/19/2005"
-    },
-    {
-        "name": "KULDEEP KUMAR",
-        "rollno": 22015003572,
-        "dob": "04/05/2005"
-    },
-    {
-        "name": "KUNAL PRAJAPATI",
-        "rollno": 22015003573,
-        "dob": "03/05/2003"
-    },
-    {
-        "name": "LAKSHYA SRIVASTAVA",
-        "rollno": 22015003574,
-        "dob": "11/17/2006"
     }
 ]
