@@ -289,17 +289,10 @@ class AKTUResult(BaseResult):
 
 
 if __name__=="__main__":
-    # result = CSJMUResult()
-    # result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
-    # result.close()
-
     result = CSJMUResult()
-    result.read_excel_sheet(filename="1BCA-A.xlsx")
-    print(result.Students)
-    # result.get_all_students()
+    result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
     result.close()
 
     # result = AKTUResult()
     # # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
-    # result.get_all_students()
     # result.close()
