@@ -15,13 +15,6 @@ import os, json
 import base64
 import time
 
-baseDetails = {
-    "sessionId": "24",
-    "category": "RG",
-    "course": "BACHELOR OF COMPUTER APPLICATION",
-    "sem": "4"
-}
-
 
 class BaseResult:
     def __init__(self):
@@ -73,7 +66,15 @@ class BaseResult:
         self.driver.quit()
 
 
-class CSJMUResult(BaseResult):    
+class CSJMUResult(BaseResult): 
+
+    baseDetails = {
+        "sessionId": "24",
+        "category": "RG",
+        "course": "BACHELOR OF COMPUTER APPLICATION",
+        "sem": "3"
+    }
+       
     def get_all_students(self):
 
         with open("students.json", 'r') as file:
@@ -95,21 +96,21 @@ class CSJMUResult(BaseResult):
             # Fill session id
             dropdown_sessionid = self.driver.find_element(By.ID, "SessionID")
             select = Select(dropdown_sessionid)
-            select.select_by_value(baseDetails['sessionId'])
+            select.select_by_value(self.baseDetails['sessionId'])
 
             # Wait for api to populate exam category
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[@value='{baseDetails['category']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[@value='{self.baseDetails['category']}']"))
             )
 
             dropdown_examcode = self.driver.find_element(By.ID, "ExamCategoryCode")
             select = Select(dropdown_examcode)
-            select.select_by_value(baseDetails['category'])
+            select.select_by_value(self.baseDetails['category'])
 
 
             # wait for api to populate course options
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[text()='{baseDetails['course']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[text()='{self.baseDetails['course']}']"))
             )
             
             # click on course option
@@ -117,18 +118,18 @@ class CSJMUResult(BaseResult):
             dropdown_course.click()
 
             # wait and click on course 
-            dropdown_option = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, f"//li[@class='select2-results__option' and text()='{baseDetails['course']}']")))
+            dropdown_option = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, f"//li[@class='select2-results__option' and text()='{self.baseDetails['course']}']")))
             dropdown_option.click()
             
             
             # wait for api to populate semester option
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[@value='{baseDetails['sem']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[@value='{self.baseDetails['sem']}']"))
             )
 
             dropdown_sem = self.driver.find_element(By.ID, "SemYearID")
             select = Select(dropdown_sem)
-            select.select_by_value(baseDetails['sem'])
+            select.select_by_value(self.baseDetails['sem'])
 
 
             # Fill rollno
@@ -294,5 +295,6 @@ if __name__=="__main__":
     result.close()
 
     # result = AKTUResult()
-    # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
+    # # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
+    # result.get_all_students()
     # result.close()
