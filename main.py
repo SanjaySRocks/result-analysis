@@ -15,8 +15,11 @@ import os, json
 import base64
 import time
 
+from extractData import extract_data_from_excel
 
 class BaseResult:
+    Students = []
+
     def __init__(self):
 
         self.driver_options = Options()
@@ -31,7 +34,9 @@ class BaseResult:
         self.service = ChromeService(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=self.service, options=self.driver_options)
 
-    
+    def read_excel_sheet(self, filename, fullname_col='Full Name', rollno_col='Roll Number', dob_col='Date of Birth'):
+        self.Students = extract_data_from_excel(filename, fullname_col, rollno_col, dob_col)
+
     def save_as_pdf(self, path):
         directory = os.path.dirname(path)
         if not os.path.exists(directory):
@@ -77,10 +82,7 @@ class CSJMUResult(BaseResult):
        
     def get_all_students(self):
 
-        with open("students.json", 'r') as file:
-            Students = json.load(file)
-
-        for st in Students:
+        for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
@@ -206,10 +208,8 @@ class CSJMUResult(BaseResult):
 
 class AKTUResult(BaseResult):
     def get_all_students(self):
-        with open("aktustudents.json", 'r') as file:
-            Students = json.load(file)
 
-        for st in Students:
+        for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
@@ -289,8 +289,13 @@ class AKTUResult(BaseResult):
 
 
 if __name__=="__main__":
+    # result = CSJMUResult()
+    # result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
+    # result.close()
+
     result = CSJMUResult()
-    result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
+    result.read_excel_sheet(filename="1BCA-A.xlsx")
+    print(result.Students)
     # result.get_all_students()
     result.close()
 
