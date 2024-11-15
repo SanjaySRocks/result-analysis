@@ -14,8 +14,28 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os, json
 import base64
 import time
+import logging
 
 from extractData import extract_data_from_excel
+
+# Create a logger
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)  # Set the base level for the logger
+
+# Create a console handler for INFO level and above
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Show INFO and higher levels on the console
+console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(console_formatter)
+logger.addHandler(console_handler)
+
+# Create a file handler for ERROR level and above
+file_handler = logging.FileHandler('errors.log', mode='a')
+file_handler.setLevel(logging.ERROR)  # Log ERROR and higher levels to a file
+file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+
 
 class BaseResult:
     Students = []
@@ -63,7 +83,7 @@ class BaseResult:
         format_name = name.replace(' ', '_')
         result_path = f"{result_folder}/result-{format_name}-{rollno}.pdf"
         if os.path.exists(result_path):
-            print(f"The file '{result_path}' already exists.")
+            logging.info(f"The file '{result_path}' already exists.")
             return True
         return False
 
@@ -77,11 +97,11 @@ class CSJMUResult(BaseResult):
         "sessionId": "24",
         "category": "RG",
         "course": "BACHELOR OF COMPUTER APPLICATION",
-        "sem": "3"
+        "sem": "2"
     }
        
     def get_all_students(self):
-
+        # logging.debug(self.Students)
         for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
@@ -158,17 +178,14 @@ class CSJMUResult(BaseResult):
                 # print(True)
                 format_name = name.replace(' ', '_')
                 self.save_as_pdf(f"Results/result-{format_name}-{rollno}.pdf")
-                print(f"---- Download Result Pdf!! {name} ----")
+                logging.info(f"---- Download Result Pdf!! {name} ----")
             
 
         except UnexpectedAlertPresentException as e:
-
+            #  e.msg holds more details about error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
-            print(details)
-            print("Error: ", e.alert_text)
-
-            with open('error_logs', 'a') as file:
-                file.write(f'{details}\nError: {e.msg}\n\n')
+            logging.error(details)
+            logging.error("Error: ", e.alert_text)
 
 
     # Extra functions
@@ -201,7 +218,7 @@ class CSJMUResult(BaseResult):
             return roll_number
 
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logging.error(f"An error occurred: {e}")
             return None
 
 
@@ -251,16 +268,14 @@ class AKTUResult(BaseResult):
             format_name = name.replace(' ', '_')
             self.save_as_pdf(f"AKTUResults/result-{format_name}-{rollno}.pdf")
 
-            print(f"---- Download Result Pdf!! {name} ----")
+            logging.info(f"---- Download Result Pdf!! {name} ----")
 
         except Exception as e:
+            # e.msg holds more info about the error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
             
-            print(details)
-            print("An error occurred: ", e)
-
-            with open('aktu_error_logs', 'a') as file:
-                file.write(f'{details}\nError: {e}\n\n')
+            logging.error(details)
+            logging.error("An error occurred: ", e)
 
 
     def scroll_expand(self):
@@ -284,7 +299,7 @@ class AKTUResult(BaseResult):
                 time.sleep(0.5)
                 
             except Exception as e:
-                print(f"An error occurred while clicking element {index+1}: {e}")
+                logging.error(f"An error occurred while clicking element {index+1}: {e}")
 
 
 
