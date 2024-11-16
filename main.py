@@ -38,6 +38,9 @@ logger.addHandler(file_handler)
 
 
 class BaseResult:
+    """
+        Stores students data such as rollno, name, dob extracted from excel sheet
+    """
     Students = []
 
     def __init__(self):
@@ -55,9 +58,26 @@ class BaseResult:
         self.driver = webdriver.Chrome(service=self.service, options=self.driver_options)
 
     def read_excel_sheet(self, filename, fullname_col='Full Name', rollno_col='Roll Number', dob_col='Date of Birth'):
+        """
+            Reads student data from an Excel sheet and stores it in the Students attribute.
+
+            Args:
+                filename (str): Path to the Excel file.
+                fullname_col (str): Column name for full names. Default is 'Full Name'.
+                rollno_col (str): Column name for roll numbers. Default is 'Roll Number'.
+                dob_col (str): Column name for dates of birth. Default is 'Date of Birth'.
+        """
         self.Students = extract_data_from_excel(filename, fullname_col, rollno_col, dob_col)
 
     def save_as_pdf(self, path):
+        
+        """
+            Saves the current page displayed in the browser as a PDF file.
+
+            Args:
+                path (str): The file path where the PDF will be saved. If the specified 
+                            directory does not exist, it will be created.
+        """
         directory = os.path.dirname(path)
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -80,6 +100,17 @@ class BaseResult:
             file.write(pdf_data)
 
     def check_result_exist(self, name, rollno, result_folder):
+        """
+            Checks if a result PDF file already exists for the given student.
+
+            Args:
+                name (str): The full name of the student.
+                rollno (str): The roll number of the student.
+                result_folder (str): The folder where results are stored.
+
+            Returns:
+                bool: True if the file exists, False otherwise.
+        """
         format_name = name.replace(' ', '_')
         result_path = f"{result_folder}/result-{format_name}-{rollno}.pdf"
         if os.path.exists(result_path):
@@ -88,6 +119,9 @@ class BaseResult:
         return False
 
     def close(self):
+        """
+            Closes the browser and quits the WebDriver session.
+        """
         self.driver.quit()
 
 
