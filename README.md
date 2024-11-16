@@ -48,10 +48,14 @@ result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
 result.close()
 ```
 
-2. Get all result by providing a list of students
+2. Get all result by providing a list of students (required students excel sheet)
+
+Excel Sheet :-
+Column name should be same as (Roll Number, Full Name, Date of Birth) in order to work
 
 ```
 result = CSJMUResult()
+result.read_excel_sheet(filename="1BCA-A.xlsx")
 result.get_all_students()
 result.close()
 ```
