@@ -2,6 +2,7 @@ import pdfplumber
 import os
 import time
 # pdf_path = 'Results/result-MANASVI_MISHRA-22015003575.pdf'
+import pandas as pd
 
 data = []
 
@@ -18,11 +19,11 @@ def getScore(pdf_path):
                         data.append([str(pdf_path), row[2], row[5]])
 
 
-def main():
+def getToppers(folder_name):
     start_time = time.time()
 
-    for filename in os.listdir("Results"):
-        file_path = os.path.join("Results", filename)
+    for filename in os.listdir(folder_name):
+        file_path = os.path.join(folder_name, filename)
         if os.path.isfile(file_path):
             getScore(file_path)
 
@@ -31,8 +32,20 @@ def main():
     elapsed = end_time - start_time
     print(elapsed)
 
+    # Sort by CGPA
     data_sorted = sorted(data, key=lambda x: float(x[2]), reverse=True)
 
-    print(data_sorted[:3])
+    print("Top 10 Toppers:")
+    for entry in data_sorted[:10]:
+        print(entry)
 
-main()
+    # Convert sorted data to a DataFrame
+    df = pd.DataFrame(data_sorted[:10], columns=['File Path', 'SGPA', 'CGPA'])
+
+    # Save to Excel file
+    df.to_excel("{}-toppers.xlsx".format(folder_name), index=False)
+    print("Data saved to toppers.xlsx")
+
+
+if __name__=="__main__":
+    getToppers(folder_name="2BCA-A")

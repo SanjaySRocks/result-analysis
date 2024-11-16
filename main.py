@@ -14,16 +14,35 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os, json
 import base64
 import time
+import logging
 
-baseDetails = {
-    "sessionId": "24",
-    "category": "RG",
-    "course": "BACHELOR OF COMPUTER APPLICATION",
-    "sem": "4"
-}
+from utils import extract_data_from_excel
+
+# Create a logger
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)  # Set the base level for the logger
+
+# Create a console handler for INFO level and above
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Show INFO and higher levels on the console
+console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(console_formatter)
+logger.addHandler(console_handler)
+
+# Create a file handler for ERROR level and above
+file_handler = logging.FileHandler('errors.log', mode='a')
+file_handler.setLevel(logging.ERROR)  # Log ERROR and higher levels to a file
+file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
 
 
 class BaseResult:
+    """
+        Stores students data such as rollno, name, dob extracted from excel sheet
+    """
+    Students = []
+
     def __init__(self):
 
         self.driver_options = Options()
@@ -38,8 +57,27 @@ class BaseResult:
         self.service = ChromeService(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=self.service, options=self.driver_options)
 
-    
+    def read_excel_sheet(self, filename, fullname_col='Full Name', rollno_col='Roll Number', dob_col='Date of Birth'):
+        """
+            Reads student data from an Excel sheet and stores it in the Students attribute.
+
+            Args:
+                filename (str): Path to the Excel file.
+                fullname_col (str): Column name for full names. Default is 'Full Name'.
+                rollno_col (str): Column name for roll numbers. Default is 'Roll Number'.
+                dob_col (str): Column name for dates of birth. Default is 'Date of Birth'.
+        """
+        self.Students = extract_data_from_excel(filename, fullname_col, rollno_col, dob_col)
+
     def save_as_pdf(self, path):
+        
+        """
+            Saves the current page displayed in the browser as a PDF file.
+
+            Args:
+                path (str): The file path where the PDF will be saved. If the specified 
+                            directory does not exist, it will be created.
+        """
         directory = os.path.dirname(path)
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -62,24 +100,43 @@ class BaseResult:
             file.write(pdf_data)
 
     def check_result_exist(self, name, rollno, result_folder):
+        """
+            Checks if a result PDF file already exists for the given student.
+
+            Args:
+                name (str): The full name of the student.
+                rollno (str): The roll number of the student.
+                result_folder (str): The folder where results are stored.
+
+            Returns:
+                bool: True if the file exists, False otherwise.
+        """
         format_name = name.replace(' ', '_')
         result_path = f"{result_folder}/result-{format_name}-{rollno}.pdf"
         if os.path.exists(result_path):
-            print(f"The file '{result_path}' already exists.")
+            logging.info(f"The file '{result_path}' already exists.")
             return True
         return False
 
     def close(self):
+        """
+            Closes the browser and quits the WebDriver session.
+        """
         self.driver.quit()
 
 
-class CSJMUResult(BaseResult):    
+class CSJMUResult(BaseResult): 
+
+    baseDetails = {
+        "sessionId": "24",
+        "category": "RG",
+        "course": "BACHELOR OF COMPUTER APPLICATION",
+        "sem": "2"
+    }
+       
     def get_all_students(self):
-
-        with open("students.json", 'r') as file:
-            Students = json.load(file)
-
-        for st in Students:
+        # logging.debug(self.Students)
+        for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
@@ -95,21 +152,21 @@ class CSJMUResult(BaseResult):
             # Fill session id
             dropdown_sessionid = self.driver.find_element(By.ID, "SessionID")
             select = Select(dropdown_sessionid)
-            select.select_by_value(baseDetails['sessionId'])
+            select.select_by_value(self.baseDetails['sessionId'])
 
             # Wait for api to populate exam category
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[@value='{baseDetails['category']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[@value='{self.baseDetails['category']}']"))
             )
 
             dropdown_examcode = self.driver.find_element(By.ID, "ExamCategoryCode")
             select = Select(dropdown_examcode)
-            select.select_by_value(baseDetails['category'])
+            select.select_by_value(self.baseDetails['category'])
 
 
             # wait for api to populate course options
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[text()='{baseDetails['course']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[text()='{self.baseDetails['course']}']"))
             )
             
             # click on course option
@@ -117,18 +174,18 @@ class CSJMUResult(BaseResult):
             dropdown_course.click()
 
             # wait and click on course 
-            dropdown_option = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, f"//li[@class='select2-results__option' and text()='{baseDetails['course']}']")))
+            dropdown_option = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, f"//li[@class='select2-results__option' and text()='{self.baseDetails['course']}']")))
             dropdown_option.click()
             
             
             # wait for api to populate semester option
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//option[@value='{baseDetails['sem']}']"))
+                EC.presence_of_element_located((By.XPATH, f"//option[@value='{self.baseDetails['sem']}']"))
             )
 
             dropdown_sem = self.driver.find_element(By.ID, "SemYearID")
             select = Select(dropdown_sem)
-            select.select_by_value(baseDetails['sem'])
+            select.select_by_value(self.baseDetails['sem'])
 
 
             # Fill rollno
@@ -155,17 +212,14 @@ class CSJMUResult(BaseResult):
                 # print(True)
                 format_name = name.replace(' ', '_')
                 self.save_as_pdf(f"Results/result-{format_name}-{rollno}.pdf")
-                print(f"---- Download Result Pdf!! {name} ----")
+                logging.info(f"---- Download Result Pdf!! {name} ----")
             
 
         except UnexpectedAlertPresentException as e:
-
+            #  e.msg holds more details about error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
-            print(details)
-            print("Error: ", e.alert_text)
-
-            with open('error_logs', 'a') as file:
-                file.write(f'{details}\nError: {e.msg}\n\n')
+            logging.error(details)
+            logging.error("Error: ", e.alert_text)
 
 
     # Extra functions
@@ -198,17 +252,15 @@ class CSJMUResult(BaseResult):
             return roll_number
 
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logging.error(f"An error occurred: {e}")
             return None
 
 
 
 class AKTUResult(BaseResult):
     def get_all_students(self):
-        with open("aktustudents.json", 'r') as file:
-            Students = json.load(file)
 
-        for st in Students:
+        for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
@@ -250,16 +302,14 @@ class AKTUResult(BaseResult):
             format_name = name.replace(' ', '_')
             self.save_as_pdf(f"AKTUResults/result-{format_name}-{rollno}.pdf")
 
-            print(f"---- Download Result Pdf!! {name} ----")
+            logging.info(f"---- Download Result Pdf!! {name} ----")
 
         except Exception as e:
+            # e.msg holds more info about the error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
             
-            print(details)
-            print("An error occurred: ", e)
-
-            with open('aktu_error_logs', 'a') as file:
-                file.write(f'{details}\nError: {e}\n\n')
+            logging.error(details)
+            logging.error("An error occurred: ", e)
 
 
     def scroll_expand(self):
@@ -283,16 +333,15 @@ class AKTUResult(BaseResult):
                 time.sleep(0.5)
                 
             except Exception as e:
-                print(f"An error occurred while clicking element {index+1}: {e}")
+                logging.error(f"An error occurred while clicking element {index+1}: {e}")
 
 
 
 if __name__=="__main__":
     result = CSJMUResult()
     result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
-    # result.get_all_students()
     result.close()
 
     # result = AKTUResult()
-    # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
+    # # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
     # result.close()

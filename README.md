@@ -30,7 +30,7 @@ git clone https://github.com/SanjaySRocks/csjmu-result-downloader.git
 
 2. Install dependencies
 ```
-pip install selenium webdriver-manager
+pip install selenium webdriver-manager pandas
 ```
 
 3. Run script
@@ -48,10 +48,16 @@ result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
 result.close()
 ```
 
-2. Get all result by providing a list of students
+2. Get all result by providing a list of students (required students excel sheet)
+
+Excel Sheet :- <br>
+Column name should be same as (Roll Number, Full Name, Date of Birth) in order to work
+
+![img](https://i.imgur.com/EAOitxX.png)
 
 ```
 result = CSJMUResult()
+result.read_excel_sheet(filename="1BCA-A.xlsx")
 result.get_all_students()
 result.close()
 ```
