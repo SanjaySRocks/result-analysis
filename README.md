@@ -30,7 +30,7 @@ git clone https://github.com/SanjaySRocks/csjmu-result-downloader.git
 
 2. Install dependencies
 ```
-pip install selenium webdriver-manager
+pip install selenium webdriver-manager pandas
 ```
 
 3. Run script
