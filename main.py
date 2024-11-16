@@ -16,7 +16,7 @@ import base64
 import time
 import logging
 
-from extractData import extract_data_from_excel
+from utils import extract_data_from_excel
 
 # Create a logger
 logger = logging.getLogger()
