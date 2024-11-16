@@ -50,8 +50,10 @@ result.close()
 
 2. Get all result by providing a list of students (required students excel sheet)
 
-Excel Sheet :-
+Excel Sheet :- <br>
 Column name should be same as (Roll Number, Full Name, Date of Birth) in order to work
+
+![img](https://i.imgur.com/EAOitxX.png)
 
 ```
 result = CSJMUResult()
