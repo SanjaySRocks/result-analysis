@@ -13,6 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import os, json
 import base64
+from datetime import datetime
 import time
 import logging
 
@@ -29,8 +30,10 @@ console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s
 console_handler.setFormatter(console_formatter)
 logger.addHandler(console_handler)
 
-# Create a file handler for ERROR level and above
-file_handler = logging.FileHandler('result_downloader.log', mode='a')
+# Create a file handler for INFO level and above
+os.makedirs("logs", exist_ok=True)
+timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+file_handler = logging.FileHandler(f'logs/{timestamp}.log', mode='a')
 file_handler.setLevel(logging.INFO)  # Log ERROR and higher levels to a file
 file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(file_formatter)
@@ -131,7 +134,7 @@ class CSJMUResult(BaseResult):
         "sessionId": "24",
         "category": "RG",
         "course": "BACHELOR OF COMPUTER APPLICATION",
-        "sem": "4"
+        "sem": "6"
     }
        
     def get_all_students(self):
