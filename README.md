@@ -30,7 +30,7 @@ git clone https://github.com/SanjaySRocks/csjmu-result-downloader.git
 
 2. Install dependencies
 ```
-pip install selenium webdriver-manager pandas
+pip install selenium webdriver-manager pandas PyMuPDF
 ```
 
 3. Run script
