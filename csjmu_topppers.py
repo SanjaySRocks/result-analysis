@@ -1,6 +1,8 @@
 import os
 import time
 import pandas as pd
+from openpyxl import load_workbook
+
 import fitz  # PyMuPDF
 
 data = []
@@ -24,7 +26,7 @@ def getScore(pdf_path):
                     cgpa = lines[i+1]
 
 
-        data.append([str(pdf_path), sgpa, cgpa])
+        data.append([str(pdf_path), float(sgpa), float(cgpa)])
 
 
 def getToppers(folder_name):
@@ -52,8 +54,33 @@ def getToppers(folder_name):
     df = pd.DataFrame(data_sorted[:10], columns=['File Path', 'SGPA', 'CGPA'])
 
     # Save to Excel file
-    df.to_excel(f"{folder_name}-toppers.xlsx", index=False)
-    print("Data saved to toppers.xlsx")
+    excel_file = f"{folder_name}-toppers.xlsx"
+    df.to_excel(excel_file, index=False)
+
+    fix_coloumn(excel_file)
+    
+    print("Data saved to {}".format(excel_file))
+
+
+def fix_coloumn(excel_file):
+    # Adjust column widths
+    wb = load_workbook(excel_file)
+    ws = wb.active
+
+    for column in ws.columns:
+        max_length = 0
+        column_letter = column[0].column_letter  # Get the column letter
+        for cell in column:
+            try:  # Ignore empty cells
+                if cell.value:
+                    max_length = max(max_length, len(str(cell.value)))
+            except:
+                pass
+        adjusted_width = max_length + 2  # Add some padding
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+    # Save the adjusted Excel file
+    wb.save(excel_file)
 
 
 if __name__ == "__main__":
