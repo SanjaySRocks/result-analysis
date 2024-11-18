@@ -30,8 +30,8 @@ console_handler.setFormatter(console_formatter)
 logger.addHandler(console_handler)
 
 # Create a file handler for ERROR level and above
-file_handler = logging.FileHandler('errors.log', mode='a')
-file_handler.setLevel(logging.ERROR)  # Log ERROR and higher levels to a file
+file_handler = logging.FileHandler('result_downloader.log', mode='a')
+file_handler.setLevel(logging.INFO)  # Log ERROR and higher levels to a file
 file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
@@ -131,7 +131,7 @@ class CSJMUResult(BaseResult):
         "sessionId": "24",
         "category": "RG",
         "course": "BACHELOR OF COMPUTER APPLICATION",
-        "sem": "2"
+        "sem": "4"
     }
        
     def get_all_students(self):
@@ -218,8 +218,8 @@ class CSJMUResult(BaseResult):
         except UnexpectedAlertPresentException as e:
             #  e.msg holds more details about error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
-            logging.error(details)
-            logging.error("Error: ", e.alert_text)
+            logging.info(details)
+            logging.error("Error: {}".format(e.alert_text))
 
 
     # Extra functions
@@ -308,7 +308,7 @@ class AKTUResult(BaseResult):
             # e.msg holds more info about the error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
             
-            logging.error(details)
+            logging.info(details)
             logging.error("An error occurred: ", e)
 
 
