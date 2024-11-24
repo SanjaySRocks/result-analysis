@@ -3,15 +3,16 @@ from openpyxl import load_workbook
 import pandas as pd
 
 # Path to the Excel file
-file_path = "data/3BCA-A.xlsx"  # Replace with your file path
-newfile_path = "data/3BCA-A-updated.xlsx"
-sheet_name = "tablexls"       # Replace with the sheet name you want to read
+file_path = "data/3BCA-A.xlsx"  # Replace with your input file path
+newfile_path = "data/3BCA-A-updated.xlsx" # Rename output file
+sheet_name = "tablexls"       # Replace with the sheet name you want to read (inside excel)
 
 
 def read_and_write():
     '''
-        Provide path for folder containing csjmu results
+        reads and write excel sheet with updated data 
     '''
+    # Provide path for folder containing csjmu results
     six_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\3BCA-A")
     # fourth_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A")
     # third_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A_3rdSem")

@@ -9,7 +9,7 @@ import fitz  # PyMuPDF
 def getScore(pdf_path):
     '''
         Takes result pdf path as argument
-        returns extract data from pdf
+        returns extracted data from pdf
         Supported: CSJMU RESULT ONLY
     '''
     local_data = []
@@ -70,11 +70,9 @@ def getStudentData(folder_name):
         if os.path.isfile(file_path):
             data.extend(getScore(file_path))
             
-            
-
     end_time = time.time()
-
     elapsed = end_time - start_time
+    
     print(f"Elapsed time: {elapsed:.2f} seconds")
 
     return data
