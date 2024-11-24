@@ -7,6 +7,11 @@ import fitz  # PyMuPDF
 
 
 def getScore(pdf_path):
+    '''
+        Takes result pdf path as argument
+        returns extract data from pdf
+        Supported: CSJMU RESULT ONLY
+    '''
     local_data = []
     # print(pdf_path)
     back_papers = None
@@ -53,6 +58,10 @@ def getScore(pdf_path):
 
 
 def getStudentData(folder_name):
+    '''
+        It takes result folder path as arguement
+        returns all pdf extracted data as an list
+    '''
     data = []
     start_time = time.time()
 
@@ -75,7 +84,10 @@ def getStudentData(folder_name):
 
 
 def fix_coloumn(excel_file):
-    # Adjust column widths
+    '''
+        Fix coloumn width automatically
+        Pass excel file path as argument
+    '''
     wb = load_workbook(excel_file)
     ws = wb.active
 
