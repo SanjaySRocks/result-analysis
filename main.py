@@ -129,7 +129,9 @@ class BaseResult:
 
 
 class CSJMUResult(BaseResult): 
-
+    """
+        Update this baseDetails according to your course and year
+    """
     baseDetails = {
         "sessionId": "24",
         "category": "RG",
@@ -138,13 +140,22 @@ class CSJMUResult(BaseResult):
     }
        
     def get_all_students(self):
-        # logging.debug(self.Students)
+        """
+            Loop through all students in list and process for result
+        """
+        if not self.Students:
+            logging.info("Student list is EMPTY! Please provide the list to process result!")
+            return 
+        
         for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
     def process_student(self, name, rollno, dob):
-
+        """
+            Gets result from official portal
+            It takes name, rollnumber and date of birth as an arguement
+        """
         if self.check_result_exist(name, rollno, "Results"):
             return
 
@@ -227,6 +238,11 @@ class CSJMUResult(BaseResult):
 
     # Extra functions
     def get_roll_no(self, enrollno):
+        """
+            Misc function 
+            Gets student roll number from enrollment number
+            It takes enrollment number as an arguement (format: CSJMA2209120121)
+        """
         try:
             # Open the website
             self.driver.get("https://admission.csjmu.ac.in/Search/SearchRollNumber")
@@ -262,13 +278,22 @@ class CSJMUResult(BaseResult):
 
 class AKTUResult(BaseResult):
     def get_all_students(self):
-
+        """
+            Loop through all students in list and process for result
+        """
+        if not self.Students:
+            logging.info("Student list is EMPTY! Please provide the list to process result!")
+            return 
+        
         for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
     def process_student(self, name, rollno, dob):
-        
+        """
+            Gets result from official portal
+            It takes name, rollnumber and date of birth as an arguement
+        """
         if self.check_result_exist(name, rollno, "AKTUResults"):
             return
     
@@ -344,7 +369,3 @@ if __name__=="__main__":
     result = CSJMUResult()
     result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
     result.close()
-
-    # result = AKTUResult()
-    # # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
-    # result.close()
