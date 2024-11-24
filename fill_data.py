@@ -1,4 +1,4 @@
-from get_cgpa import getScore, getStudentData
+from get_cgpa import getScore, getStudentData, fix_coloumn
 from openpyxl import load_workbook
 import pandas as pd
 
@@ -8,29 +8,10 @@ newfile_path = "data/3BCA-A-updated.xlsx"
 sheet_name = "tablexls"       # Replace with the sheet name you want to read
 
 
-def fix_coloumn(excel_file):
-    # Adjust column widths
-    wb = load_workbook(excel_file)
-    ws = wb.active
-
-    for column in ws.columns:
-        max_length = 0
-        column_letter = column[0].column_letter  # Get the column letter
-        for cell in column:
-            try:  # Ignore empty cells
-                if cell.value:
-                    max_length = max(max_length, len(str(cell.value)))
-            except:
-                pass
-        adjusted_width = max_length + 2  # Add some padding
-        ws.column_dimensions[column_letter].width = adjusted_width
-
-    # Save the adjusted Excel file
-    wb.save(excel_file)
-
-
 def read_and_write():
-
+    '''
+        Provide path for folder containing csjmu results
+    '''
     six_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\3BCA-A")
     # fourth_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A")
     # third_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A_3rdSem")
@@ -75,9 +56,6 @@ def read_and_write():
             print(" File written successfully!")
         else:
             print("Operation Canceled")
-        # Print column names
-        # print("\nColumn Names:")
-        # print(data.columns)
 
     except FileNotFoundError:
         print(f"Error: The file '{file_path}' does not exist.")
@@ -85,4 +63,5 @@ def read_and_write():
         print(f"An error occurred: {e}")
 
 
-read_and_write()
+if __name__ == "__main__":
+    read_and_write()
