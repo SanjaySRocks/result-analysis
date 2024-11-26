@@ -1,4 +1,4 @@
-from get_cgpa import collect_pdf_data, getScore, getStudentData, fix_coloumn
+from get_cgpa import scan_result_dir, fix_coloumn
 from openpyxl import load_workbook
 import pandas as pd
 import math
@@ -22,7 +22,7 @@ def read_and_write():
 
     try:
         # Provide path for folder containing csjmu results
-        result_data = collect_pdf_data(result_dir)
+        result_data = scan_result_dir(result_dir)
 
         data = pd.read_excel(file_path, sheet_name=sheet_name)
 

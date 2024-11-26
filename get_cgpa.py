@@ -1,14 +1,24 @@
 import os
 import time
-import pandas as pd
 from openpyxl import load_workbook
 
 import fitz  # PyMuPDF
 
 
-def collect_pdf_data(base_folder):
+def scan_result_dir(base_folder):
     """
     Traverse the directory structure and collect all semester data for each roll number.
+
+    Base_Folder/
+            1/
+                12345.pdf
+                67890.pdf
+            2/
+                12345.pdf
+                67890.pdf
+            3/
+                12345.pdf
+
     """
     all_data = {}
 
@@ -26,7 +36,7 @@ def collect_pdf_data(base_folder):
                         all_data[roll_number] = []
                     
                     pdf_path = os.path.join(sem_path, pdf_file)
-                    pdf_data = getScore(pdf_path)
+                    pdf_data = read_csjmu_result(pdf_path)
                     
                     if pdf_data:
                         # Append semester data (file path) to the roll number list
@@ -48,10 +58,9 @@ def collect_pdf_data(base_folder):
 
 
 
-def getScore(pdf_path):
+def read_csjmu_result(pdf_path):
     '''
-        Takes result pdf path as argument
-        returns extracted data from pdf
+       Extract data from result pdf
         Supported: CSJMU RESULT ONLY
     '''
 
@@ -107,30 +116,6 @@ def getScore(pdf_path):
 
 
 
-def getStudentData(folder_name):
-    '''
-        It takes result folder path as arguement
-        returns all pdf extracted data as an list
-    '''
-    data = []
-    start_time = time.time()
-
-    for filename in os.listdir(folder_name):
-        file_path = os.path.join(folder_name, filename)
-        if os.path.isfile(file_path):
-            data.extend(getScore(file_path))
-            
-    end_time = time.time()
-    elapsed = end_time - start_time
-    
-    print(f"Elapsed time: {elapsed:.2f} seconds")
-
-    return data
-
-    
-
-
-
 def fix_coloumn(excel_file):
     '''
         Fix coloumn width automatically
@@ -157,5 +142,5 @@ def fix_coloumn(excel_file):
 
 if __name__ == "__main__":
 
-    data = collect_pdf_data(r"C:\Users\sanjay\Downloads\Results\2BCA-A")
+    data = scan_result_dir(r"C:\Users\sanjay\Downloads\Results\2BCA-A")
     print(data)
