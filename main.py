@@ -13,6 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import os, json
 import base64
+from datetime import datetime
 import time
 import logging
 
@@ -29,9 +30,11 @@ console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s
 console_handler.setFormatter(console_formatter)
 logger.addHandler(console_handler)
 
-# Create a file handler for ERROR level and above
-file_handler = logging.FileHandler('errors.log', mode='a')
-file_handler.setLevel(logging.ERROR)  # Log ERROR and higher levels to a file
+# Create a file handler for INFO level and above
+os.makedirs("logs", exist_ok=True)
+timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+file_handler = logging.FileHandler(f'logs/{timestamp}.log', mode='a')
+file_handler.setLevel(logging.INFO)  # Log ERROR and higher levels to a file
 file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
@@ -126,22 +129,33 @@ class BaseResult:
 
 
 class CSJMUResult(BaseResult): 
-
+    """
+        Update this baseDetails according to your course and year
+    """
     baseDetails = {
         "sessionId": "24",
         "category": "RG",
         "course": "BACHELOR OF COMPUTER APPLICATION",
-        "sem": "2"
+        "sem": "6"
     }
        
     def get_all_students(self):
-        # logging.debug(self.Students)
+        """
+            Loop through all students in list and process for result
+        """
+        if not self.Students:
+            logging.info("Student list is EMPTY! Please provide the list to process result!")
+            return 
+        
         for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
     def process_student(self, name, rollno, dob):
-
+        """
+            Gets result from official portal
+            It takes name, rollnumber and date of birth as an arguement
+        """
         if self.check_result_exist(name, rollno, "Results"):
             return
 
@@ -218,12 +232,17 @@ class CSJMUResult(BaseResult):
         except UnexpectedAlertPresentException as e:
             #  e.msg holds more details about error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
-            logging.error(details)
-            logging.error("Error: ", e.alert_text)
+            logging.info(details)
+            logging.error("Error: {}".format(e.alert_text))
 
 
     # Extra functions
     def get_roll_no(self, enrollno):
+        """
+            Misc function 
+            Gets student roll number from enrollment number
+            It takes enrollment number as an arguement (format: CSJMA2209120121)
+        """
         try:
             # Open the website
             self.driver.get("https://admission.csjmu.ac.in/Search/SearchRollNumber")
@@ -259,13 +278,22 @@ class CSJMUResult(BaseResult):
 
 class AKTUResult(BaseResult):
     def get_all_students(self):
-
+        """
+            Loop through all students in list and process for result
+        """
+        if not self.Students:
+            logging.info("Student list is EMPTY! Please provide the list to process result!")
+            return 
+        
         for st in self.Students:
             self.process_student(st['name'], st['rollno'], st['dob'])
 
 
     def process_student(self, name, rollno, dob):
-        
+        """
+            Gets result from official portal
+            It takes name, rollnumber and date of birth as an arguement
+        """
         if self.check_result_exist(name, rollno, "AKTUResults"):
             return
     
@@ -308,7 +336,7 @@ class AKTUResult(BaseResult):
             # e.msg holds more info about the error
             details = f"---- Failed to Get Pdf!! {name} {rollno} {dob} ----"
             
-            logging.error(details)
+            logging.info(details)
             logging.error("An error occurred: ", e)
 
 
@@ -341,7 +369,3 @@ if __name__=="__main__":
     result = CSJMUResult()
     result.process_student("MANASVI MISHRA", 22015003575, "05/27/2006")
     result.close()
-
-    # result = AKTUResult()
-    # # result.process_student("ABHINAY", 2301650140001, "12/05/2002")
-    # result.close()
