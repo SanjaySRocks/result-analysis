@@ -6,14 +6,55 @@ from openpyxl import load_workbook
 import fitz  # PyMuPDF
 
 
+def collect_pdf_data(base_folder):
+    """
+    Traverse the directory structure and collect all semester data for each roll number.
+    """
+    all_data = {}
+
+    start_time = time.time()
+    # Loop through each semester folder in the base directory
+    for semester in sorted(os.listdir(base_folder), key=lambda x: int(x)):  # Sort semesters numerically
+        sem_path = os.path.join(base_folder, semester)
+        if os.path.isdir(sem_path):
+            for pdf_file in os.listdir(sem_path):
+                if pdf_file.endswith(".pdf"):
+                    filename = pdf_file.split(".")[0]  # Extract roll number from file name
+                    roll_number = filename.split('-')[-1]
+
+                    if roll_number not in all_data:
+                        all_data[roll_number] = []
+                    
+                    pdf_path = os.path.join(sem_path, pdf_file)
+                    pdf_data = getScore(pdf_path)
+                    
+                    if pdf_data:
+                        # Append semester data (file path) to the roll number list
+                        all_data[roll_number].append({
+                            "semester": semester,
+                            "sgpa": pdf_data[2],
+                            "cgpa": pdf_data[3],
+                            "back_papers": pdf_data[4],
+                            "result": pdf_data[5],
+                            "division": pdf_data[6],
+                            "pdf_path": pdf_data[0]
+                        })
+    end_time = time.time()
+    elapsed = end_time - start_time
+    
+    print(f"Elapsed time: {elapsed:.2f} seconds - Scanning Done!")
+    return all_data
+
+
+
+
 def getScore(pdf_path):
     '''
         Takes result pdf path as argument
         returns extracted data from pdf
         Supported: CSJMU RESULT ONLY
     '''
-    local_data = []
-    # print(pdf_path)
+
     back_papers = None
     result = None
     division = None
@@ -35,7 +76,10 @@ def getScore(pdf_path):
                     roll_number = lines[i+1]
 
                 if "CARRY OVER PAPER(S)" in line:
-                    back_papers = lines[i+1].split(",")
+                    if lines[i+1] == "SGPA":
+                        back_papers = None
+                    else:    
+                        back_papers = lines[i+1].split(",")
 
                 if "RESULT" == line:
                     # print(line)
@@ -51,9 +95,15 @@ def getScore(pdf_path):
                     cgpa = lines[i+1]
 
 
-    local_data.append([str(pdf_path), int(roll_number), float(sgpa), float(cgpa), back_papers if back_papers else None, result, division])
-    
-    return local_data
+    return [
+            str(pdf_path), 
+            int(roll_number), 
+            float(sgpa), 
+            float(cgpa), 
+            back_papers if back_papers else None, 
+            result, 
+            division
+        ]
 
 
 
@@ -106,15 +156,6 @@ def fix_coloumn(excel_file):
 
 
 if __name__ == "__main__":
-    # fourth_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A")
-    # third_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A_3rdSem")
-    # second_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A_2ndSem")
-    # first_data = getStudentData(folder_name=r"C:\Users\sanjay\Downloads\Results\2BCA-A_1stSem")
-    
-    # for fd in fourth_data:
-    #     print(fd)
 
-    # filtered_data = [record for record in fourth_data if record[1] == 22015003610]
-    # print(filtered_data)
-
-    print(getScore("C:\\Users\\sanjay\\Downloads\\Results\\3BCA-A\\result-VIVEK__SINGH-21015002607.pdf"))
+    data = collect_pdf_data(r"C:\Users\sanjay\Downloads\Results\2BCA-A")
+    print(data)
