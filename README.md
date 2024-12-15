@@ -1,4 +1,4 @@
-# CSJMU Result Downloader
+# Result Analysis
 A python tool to download result from csjmu official website. It now supports AKTU Result fetching.
 
 ### Features
